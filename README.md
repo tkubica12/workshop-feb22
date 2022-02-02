@@ -11,13 +11,23 @@
 
 
 # 1. Connect to Azure portal a observe types of services available
+1. Connect to Azure
+2. Suggest to switch to English, select your color theme etc - use configuration icon in top right corner
+3. In top left corner click on menu button and select All services - discuss what services are available
+4. Create new Resource Group - eg. by using + Create a resource in left menu or search in global search on top in middle for resource group and click Create
+5. Create resource group called "yourname" (eg. tomaskubica) in region West Europe
+6. Open Resource Group and got to Access Control (IAM)
+7. Discuss scope (tenant, management group, subscription, resource group, resource), role (and its permissions) and identity
+8. On scope of your resource group add in role "Reader" to Managed Identity -> User-assigned managed identity -> "workshop-identity"
+9. On your resource group go to Budget and Add one - monthly ammount, then set alert type Actual for 90% (triggers when you spend 90%) and of type Forecasted to 120% (triggers when you spend too fast and monthly forecast is over 120%); note appart from email you can use Action Group for complex actions including custom code
+
 # 2. Use cloud shell and CLI to quickly create VM and connect, observe created resources
 1. Go to portal and click on shell icon or open new page at [shell.azure.com](https://shell.azure.com) for Bash or [shell.azure.com/powershell](https://shell.azure.com/powershell) for PowerShell
-2. (bash) Change your name in first command and run this
+2. (bash option) Change name to match your resource group in first command and run this
 
 ```bash
 export name=tomaskubica
-az group create --name $name --location westeurope
+
 az vm create --name $name-vm1 \
     --resource-group $name \
     --image UbuntuLTS \
@@ -30,11 +40,10 @@ export ip=$(az vm list-ip-addresses -g $name -n $name-vm1 --query [0].virtualMac
 ssh azureuser@$ip
 ```
 
-2. (PowerShell) Change your name in first command and run this
+2. (PowerShell option) Change name to match your resource group in first command and run this
 
 ```powershell
 $name="tomaskubica2"
-New-AzResourceGroup -Name $name -Location "westeurope"
 
 New-AzVm `
     -ResourceGroupName $name `
@@ -46,7 +55,9 @@ New-AzVm `
 Go to portal, focus on search bar (or press g/) and type your name to search for VM. Click on it, then click on "Connect" button and download RDP file.
 
 3. Open portal, find your resource group eg. via global search on top (also via g/ shortcut), All resources (via left top menu or ga shortcut), via Resource Groups (or gr shortcut) etc.
-4. Investigate object there - virtual network, network security group, NIC, disk, VM
+4. Investigate objects there - virtual network, network security group, NIC, disk, VM
+
+This demonstrates how to quickly setup compute, storage and networking. In next sections we will go deeper customize thos to fit our enterprise needs.
 
 # 3. Prepare new network with load balancer
 1. Create new virtual network with IP range 10.x.0.0/16 where is x is assigned to you by instructor
@@ -97,7 +108,7 @@ echo "Hello from WEB 1" | sudo tee /var/www/html/index.html
 20. Connect to Load Balancer public IP from multiple tabs or use curl - you should see responses coming from different servers
 
 Troubleshooting tips:
-- Has web server been sucessfully installed? Connect to VM using Serial Console via portal a check it our (curl 127.0.0.1).
+- Has web server been sucessfully installed? Connect to VM using Serial Console via portal a check it out (curl 127.0.0.1).
 - Are health probes failing? Look at Load Balancer in portal in Insights section.
 - Make sure your VM and LB is in the same VNET.
 
@@ -139,6 +150,4 @@ Troubleshooting tips:
 7. Go to Service Health to understand how incidents and maintenance are communicated
 8. Go to Security Center and explore recommendations, vulnerabilities, missing updates etc.
 9. Go to Azure Sentinel and see Data sources, Azure Activity in Workbook section. Go to Hunting and check for various queries such as AzureActivity, AWS, ...
-
-
 
