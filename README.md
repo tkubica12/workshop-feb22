@@ -8,6 +8,7 @@
 - [5. Connect VNETs to enteprise network architecture](#5-connect-vnets-to-enteprise-network-architecture)
 - [6. Storage](#6-storage)
 - [7. Monitoring](#7-monitoring)
+- [8. Automation with Terraform](#8-automation-with-terraform)
 
 
 # 1. Connect to Azure portal a observe types of services available
@@ -151,3 +152,34 @@ Troubleshooting tips:
 8. Go to Security Center and explore recommendations, vulnerabilities, missing updates etc.
 9. Go to Azure Sentinel and see Data sources, Azure Activity in Workbook section. Go to Hunting and check for various queries such as AzureActivity, AWS, ...
 
+# 8. Automation with Terraform
+In this lab we will deploy network, load balancer and farm of web servers similar to before, but this time autometed with Infrastructure as Code. Native Azure Bicep, Terraform and Pulumi comes with deep support for Azure, but you can also leverage Crossplane (Kubernetes-style declarative model), Ansible (more imperative style). Usualy Bicep or Terraform is prefered - in our lab we will use Terraform because of its hybrid and multi-cloud capabilities.
+
+1. Open cloud shell and clone this repo
+
+```bash
+git clone https://github.com/tkubica12/workshop-feb22.git
+```
+
+2. Modify file terraform.tfvars and put your name there (prefix=yourname)
+3. Initialize Terraform and run plan to see what will be added
+
+```bash
+cd automation
+terraform init
+terraform plan
+```
+
+4. Deploy solution
+
+```bash
+terraform apply -auto-approve
+```
+
+5. Check solution works (you can access LB IP and check servers are balanced)
+6. Modify terraform.tfvars and change serverCount to 3
+7. Run terraform plan and see output (Terraform will keep existing resources and add new ones), then deploy solution
+
+Notes:
+- There is more native way to deploy number of unified servers such as in our scenario as single resource - Virtual Machine Scale Sets. But for our automation purposes we used single machines.
+- You definitely should split parts of solution to version controlled reusable modules, create environment specific setting ets. But added complexity is beyond our todays workshop - you might look at my more complex scenario at [https://github.com/tomas-iac](https://github.com/tomas-iac)
