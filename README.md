@@ -7,8 +7,9 @@
 - [4. Create new VM using wizard and discuss various options and settings](#4-create-new-vm-using-wizard-and-discuss-various-options-and-settings)
 - [5. Connect VNETs to enteprise network architecture](#5-connect-vnets-to-enteprise-network-architecture)
 - [6. Storage](#6-storage)
-- [7. Monitoring](#7-monitoring)
-- [8. Automation with Terraform](#8-automation-with-terraform)
+- [7. Database as a service](#7-database-as-a-service)
+- [8. Monitoring](#8-monitoring)
+- [9. Automation with Terraform](#9-automation-with-terraform)
 
 
 # 1. Connect to Azure portal a observe types of services available
@@ -141,7 +142,22 @@ Troubleshooting tips:
 19. Note storage with hierarchical namespace enabled supports access to Blobs (object store) using NFS 3.0, SFTP or driver for HDFS
 20. Note for specialized NAS performance needs (eg. ultra low latency or high IOPS to capacity ration) you can use Azure NetApp Files (specialized HW-based solution)
 
-# 7. Monitoring
+# 7. Database as a service
+1. Go to + Create a resource and go to Database section; observe available 1st party options there and discuss with instructor
+2. Create SQL Database
+3. In server section click on Create New
+4. Choose globally unique name 
+5. Choose Use only Azure Active Directory (Azure AD) authentication (which includes SSO, MFA and privileged access management) and select yourself as admin
+6. In Compute + storage click on Configure Database and discuss available deployment models - then let's continue with serverless option
+7. In Networking section enable public access and Add current client IP address to whitelist yourself
+8. In security discuss various options and look at Transparent Data Encryption (by default encrypted by Microsoft managed key, but you can use your own)
+9. In Data source use Sample and Create database
+10. After deployment click on Database and Query Editor, login as Azure Active Directory user and see tables (whitelist IP if needed)
+11. Go to Compute + Storage and note you can migrate between sizes and models online
+12. Database can run in 3 different building in your region (availability zones) and with Business Critical tier you can use read replicas for read operations. If you need to you can add async replica to different region - Replicas.
+13. In Overview section click on Restore button and se how you can do point-in-time restore to different DB
+
+# 8. Monitoring
 1. Your subscription has been configured with Policy to autoenroll to Azure Monitor and Security Center
 2. Go to Inventory and Change tracking and observe
 3. Backup your VM to existing backup vault in shared-workshop-resources resource group
@@ -152,7 +168,7 @@ Troubleshooting tips:
 8. Go to Security Center and explore recommendations, vulnerabilities, missing updates etc.
 9. Go to Azure Sentinel and see Data sources, Azure Activity in Workbook section. Go to Hunting and check for various queries such as AzureActivity, AWS, ...
 
-# 8. Automation with Terraform
+# 9. Automation with Terraform
 In this lab we will deploy network, load balancer and farm of web servers similar to before, but this time autometed with Infrastructure as Code. Native Azure Bicep, Terraform and Pulumi comes with deep support for Azure, but you can also leverage Crossplane (Kubernetes-style declarative model), Ansible (more imperative style). Usualy Bicep or Terraform is prefered - in our lab we will use Terraform because of its hybrid and multi-cloud capabilities.
 
 1. Open cloud shell and clone this repo
