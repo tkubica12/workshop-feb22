@@ -51,7 +51,7 @@ resource "azurerm_linux_virtual_machine" "web" {
 }
 
 resource "azurerm_storage_account" "web" {
-  name                     = "tomaskubicastore58883542"
+  name                     = "${var.prefix}542"
   resource_group_name      = azurerm_resource_group.demo.name
   location                 = azurerm_resource_group.demo.location
   account_tier             = "Standard"
