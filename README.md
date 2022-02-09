@@ -118,7 +118,7 @@ Troubleshooting tips:
 1. In portal find workshop-vwan in shared-workshop-resources resource group
 2. Go to Virtual network connections and add your VNET to workshop-hub
 3. Access your VM via Serial Port - either go to portal, VM and Serial Console or via cloud shell issue command "az serial-console connect -n yourvm -g yourrg"
-4. Check you can access shared web at 10.254.0.100 (curl 10.154.0.100) - note it can take few minutes for routes to come up after adding your VNET to hub
+4. Check you can access shared web at 10.254.0.100 (curl 10.254.0.100) - note it can take few minutes for routes to come up after adding your VNET to hub
 5. Find NIC of your VM and select Effective Routes to see routing table
 
 # 6. Storage
